@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Song Lyrics with Images</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: white;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+    #container {
+      width: 80%;
+      max-width: 600px;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      text-align: center;
+    }
+    #lyrics-container {
+      font-size: 1.5rem;
+      line-height: 2rem;
+      min-height: 100px; /* Reserve space for lyrics */
+    }
+    .fade {
+      opacity: 0;
+      animation: fadeIn 1s forwards;
+    }
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+    img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 8px;
+      opacity: 0;
+      animation: fadeIn 2s forwards;
+    }
+    audio {
+      display: none; /* Hide audio player */
+    }
+    #playButton {
+      background-color: #ff6f61;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h1>Now Playing</h1>
+    <div id="lyrics-container"></div>
+    <div id="image-container"></div>
+    <button id="playButton">Play</button> <!-- Play button -->
+  </div>
+
+  <audio id="background-audio">
+    <source src="mingle.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    const lyrics = [
+      "Mansi",
+      "mansi = doremon ",
+      "doremon = dore moon(dore mtlb dhaga, moon mtlb chand; dhaga vala chand)",
+      "dore moon= doli man(shadi me doli uthane valaa)",
+      "HEANCE PROVED Mansi is doli man"
+     
+    ];
+
+    const images = [
+      'image1.jpeg',
+      'image2.jpg',
+      'image3.jpg',
+      'image4.jpg',
+      'image5.jpg'
+    ];
+
+    const lyricsContainer = document.getElementById('lyrics-container');
+    const imageContainer = document.getElementById('image-container');
+    const audio = document.getElementById('background-audio');
+    const playButton = document.getElementById('playButton');
+    let index = 0;
+
+    // Function to display lyrics line by line and change image
+    function displayNextLine() {
+      if (index < lyrics.length) {
+        // Clear previous lyric line
+        lyricsContainer.innerHTML = '';
+
+        // Display the lyric line
+        const line = document.createElement('div');
+        line.textContent = lyrics[index];
+        line.classList.add('fade');
+        lyricsContainer.appendChild(line);
+
+        // Display the image
+        const img = document.createElement('img');
+        img.src = images[index % images.length]; // Cycle through the images
+        img.classList.add('fade');
+        imageContainer.innerHTML = ''; // Clear previous image
+        imageContainer.appendChild(img);
+
+        index++;
+        setTimeout(displayNextLine, 4000); // Show next line and change image after 4 seconds
+      }
+    }
+
+    // Play audio when play button is clicked
+    playButton.addEventListener('click', function() {
+      audio.play();
+      playButton.style.display = 'none'; // Hide play button once clicked
+      displayNextLine(); // Start displaying lyrics and images
+    });
+  </script>
+</body>
+</html>
